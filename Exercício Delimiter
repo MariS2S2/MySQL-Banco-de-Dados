@@ -1,0 +1,54 @@
+drop table pessoas;
+drop table aluno;
+drop procedure idade;
+drop procedure conceito;
+use loja;
+create table pessoas (
+cod_pessoa int primary key auto_increment,
+nom_pessoa varchar(50),
+dta_nasc_pessoa date);
+insert into  pessoas values (2,'Nair','1963/11/01');
+insert into pessoas values (1,'Catarina','1934/07/16');
+insert into pessoas values (3,'Maria','2009/09/10');
+
+select * from pessoas;
+
+CREATE TABLE ALUNO (
+		RA int( 9),
+		NOTA decimal(3,1) ) ;
+INSERT INTO ALUNO VALUES (2,4) ;
+INSERT INTO ALUNO VALUES (1,9) ;
+INSERT INTO ALUNO VALUES (3,7) ;
+
+Select * from aluno;
+
+delimiter $$
+create procedure idade (IN idpessoa int, OUT idade int)
+BEGIN
+Declare dt_nasc date;
+set dt_nasc = (select dta_nasc_pessoa from pessoas
+where cod_pessoa=idpessoa);
+set idade = year(now()) - year(dt_nasc);
+END $$
+delimiter ;
+
+Call idade(2,@idadealuno);
+Select(@idadealuno);
+
+Delimiter $$
+CREATE PROCEDURE conceito (in V_RA inT)
+begin
+DECLARE V_NOTA decimal(3,1);
+DECLARE V_CONCEITO VARCHAR(12);
+SELECT NOTA   INTO V_NOTA FROM ALUNO
+WHERE RA = V_RA;
+IF V_NOTA <= 5 THEN
+SET V_CONCEITO = 'REGULAR';
+elseif V_NOTA < 7 THEN
+SET V_CONCEITO = 'BOM';
+ELSE SET V_CONCEITO = 'EXCELENTE';
+END IF;
+SELECT CONCAT('Conceito: ',V_CONCEITO);
+END $$
+Delimiter ;
+call conceito(2);
