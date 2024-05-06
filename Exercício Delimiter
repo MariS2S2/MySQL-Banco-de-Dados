@@ -52,3 +52,26 @@ SELECT CONCAT('Conceito: ',V_CONCEITO);
 END $$
 Delimiter ;
 call conceito(2);
+
+Delimiter $$
+create procedure laco()
+begin
+DECLARE x INT;
+DECLARE str VARCHAR(255);
+SET x = 1;
+SET str = 2;
+loop_label: LOOP
+IF x > 10 THEN
+LEAVE loop_label;
+END IF;
+SET x = x + 1;
+IF (x mod 2) =0 THEN
+ITERATE loop_label;
+ELSE
+SET str = CONCAT(str,x, ' , ' );
+END IF;
+END LOOP;
+SELECT str -3,5,7,9;
+END $$
+delimiter ;
+Call laco();
